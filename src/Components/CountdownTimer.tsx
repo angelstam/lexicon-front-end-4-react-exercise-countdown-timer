@@ -24,7 +24,7 @@ export default function CountdownTimer() {
             clearInterval(intervalRef.current);
             intervalRef.current = 0;
         }
-    })
+    }, [isActive, timeLeft])
 
     function startTimer() {
         setActive(true);
@@ -51,14 +51,14 @@ export default function CountdownTimer() {
         <div>
             <h1>Nedräkningstimer</h1>
             <h2>{timeLeft} sekunder kvar{timeLeft === 0 ? ", tiden är slut!" : ""}</h2>
-            <button onClick={startTimer} disabled={isActive}>Starta</button>
-            <button onClick={pauseTimer} disabled={!isActive}>Pausa</button>
+            <button onClick={startTimer} disabled={isActive || !timeLeft}>Starta</button>
+            <button onClick={pauseTimer} disabled={!isActive || !timeLeft}>Pausa</button>
             <button onClick={reset}>Återställ</button>
             <h2>Ändra starttid</h2>
             <form method="post" onSubmit={handleNewTimeout}>
             <label>
                 Starttid
-                <input type="text" name="newTimeout" defaultValue={DEFAULT_TIMEOUT}></input>
+                <input type="number" name="newTimeout" min={0} defaultValue={DEFAULT_TIMEOUT}></input>
             </label>
             <button type="submit">Ny starttid</button>
             <button type="reset">Återställ</button>
